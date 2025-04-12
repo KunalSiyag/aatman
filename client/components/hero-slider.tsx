@@ -18,24 +18,18 @@ export default function HeroSlider() {
       description:
         "Join our heartfelt mission to provide care and support to animals in need, from street dogs to cows. Together, let's create a world where every creature is treated with kindness and dignity.",
       image: "/cow2.jpeg", 
-      bgColor: "from-yellow-50 to-amber-100",
-      textColor: "text-amber-900", // Define text color here
     },
     {
       title: "Green Futures: A Tree Plantation Drive",
       description:
         "Step into a greener tomorrow! Be a part of our tree plantation drive and contribute to creating a sustainable and thriving planet for generations to come.",
       image: "/nature.jpeg",
-      bgColor: "from-green-50 to-lime-100",
-      textColor: "text-green-900", // Define text color here
     },
     {
       title: "Harmony for Humanity: Promoting Yoga & Wellness",
       description:
         "Discover the power of yoga and wellness in transforming lives. Embrace peace, harmony, and vitality through programs designed to nurture both body and soul.",
       image: "/yoga.jpeg", 
-      bgColor: "from-blue-50 to-teal-100",
-      textColor: "text-teal-800", // Define text color here
     },
   ];
   
@@ -75,9 +69,7 @@ export default function HeroSlider() {
           key={index}
           ref={(el) => (slidesRef.current[index] = el)}
           className={cn(
-            "absolute inset-0 flex items-center justify-center transition-opacity duration-500",
-            "bg-gradient-to-r",
-            slide.bgColor
+            "absolute inset-0 flex items-center justify-center transition-opacity duration-500"
           )}
           style={{
             opacity: index === activeSlide ? 1 : 0,
@@ -89,27 +81,12 @@ export default function HeroSlider() {
         >
           <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div className="text-center lg:text-left z-10">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight text-white">
                 {slide.title}
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-lg mx-auto lg:mx-0">
                 {slide.description}
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button asChild size="lg">
-                  <Link href="/about">Learn More</Link>
-                </Button>
-                <Button variant="outline" size="lg" asChild>
-                  <Link href="/donate">Support Us</Link>
-                </Button>
-              </div>
-              <h1
-                className={cn(
-                  "text-2xl md:text-3xl lg:text-5xl tracking-normal leading-9 sm:leading-10 mt-10 font-bold mb-6 p-4",
-                  slide.textColor // Dynamically apply the text color
-                )}
-              >
-              </h1>
             </div>
           </div>
         </div>

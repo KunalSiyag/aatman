@@ -33,13 +33,25 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
-
-    // Simulate form submission
-    setTimeout(() => {
+  
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+  
+      if (!res.ok) {
+        throw new Error("Failed to send message")
+      }
+  
       toast({
         title: "Message Sent",
         description: "Thank you for contacting us. We'll get back to you soon!",
       })
+  
       setFormData({
         name: "",
         email: "",
@@ -47,9 +59,18 @@ export default function ContactPage() {
         subject: "",
         message: "",
       })
+    } catch (err) {
+      console.error(err)
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive",
+      })
+    } finally {
       setIsSubmitting(false)
-    }, 1500)
+    }
   }
+  
 
   return (
     <main className="pt-16">

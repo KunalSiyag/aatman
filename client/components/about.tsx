@@ -1,18 +1,163 @@
+"use client"
+
+import { useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Heart, Users, Leaf, BookOpen, Award, Target, Clock } from "lucide-react"
+import { Heart, Users, Leaf, Award, Target, Clock } from "lucide-react"
+import TeamMembers from "./team-members"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 export default function AboutPage() {
+  // Refs for animation targets
+  const heroRef = useRef(null)
+  const missionRef = useRef(null)
+  const focusRef = useRef(null)
+  const journeyRef = useRef(null)
+  const ctaRef = useRef(null)
+
+  useEffect(() => {
+    // Register ScrollTrigger plugin
+    gsap.registerPlugin(ScrollTrigger)
+
+    // Hero section animation
+    gsap.fromTo(
+      heroRef.current?.querySelector(".hero-content"),
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power3.out",
+      },
+    )
+
+    gsap.fromTo(
+      heroRef.current?.querySelector(".hero-image"),
+      { opacity: 0, scale: 0.8 },
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 1.2,
+        delay: 0.3,
+        ease: "back.out(1.7)",
+      },
+    )
+
+    // Mission & Vision animation
+    gsap.fromTo(
+      missionRef.current?.querySelectorAll(".mission-item"),
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: missionRef.current,
+          start: "top 80%",
+        },
+      },
+    )
+
+    gsap.fromTo(
+      missionRef.current?.querySelector(".mission-image"),
+      { opacity: 0, x: 50 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: missionRef.current,
+          start: "top 80%",
+        },
+      },
+    )
+
+    // Focus Areas animation
+    gsap.fromTo(
+      focusRef.current?.querySelector("h2"),
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: focusRef.current,
+          start: "top 80%",
+        },
+      },
+    )
+
+    gsap.fromTo(
+      focusRef.current?.querySelector(".tabs-container"),
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 0.3,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: focusRef.current,
+          start: "top 80%",
+        },
+      },
+    )
+
+    // Journey animation
+    const journeyItems = journeyRef.current?.querySelectorAll(".journey-item")
+    journeyItems?.forEach((item) => {
+      gsap.fromTo(
+        item,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: item,
+            start: "top 85%",
+          },
+        },
+      )
+    })
+
+    // CTA animation
+    gsap.fromTo(
+      ctaRef.current,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ctaRef.current,
+          start: "top 85%",
+        },
+      },
+    )
+
+    // Cleanup function
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+    }
+  }, [])
+
   return (
     <main className="pt-16">
       {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-muted/30">
+      <section ref={heroRef} className="py-16 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
+            <div className="hero-content">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">About Aatman Foundation</h1>
               <p className="text-lg text-muted-foreground mb-8">
                 Founded by Divyansh Gaur, Aatman Foundation is dedicated to community service, promoting yoga, and
@@ -28,9 +173,9 @@ export default function AboutPage() {
                 </Button>
               </div>
             </div>
-            <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
+            <div className="hero-image relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
               <Image
-                src="/placeholder.svg?height=400&width=600"
+                src="https://images.unsplash.com/photo-1593113630400-ea4288922497?q=80&w=2070&auto=format&fit=crop"
                 alt="Aatman Foundation Team"
                 fill
                 className="object-cover"
@@ -39,11 +184,11 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
+      <TeamMembers />
       {/* Mission & Vision */}
-      <section className="py-16 md:py-24">
+      <section ref={missionRef} className="py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center mb-16">
+          <div className="max-w-4xl mx-auto text-center mb-16 mission-item">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Mission & Vision</h2>
             <p className="text-lg text-muted-foreground">
               Guided by our core values, we work towards creating a more harmonious and sustainable world.
@@ -53,7 +198,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1">
               <div className="space-y-8">
-                <div className="space-y-3">
+                <div className="space-y-3 mission-item">
                   <div className="flex items-center gap-3">
                     <Target className="h-6 w-6 text-primary" />
                     <h3 className="text-2xl font-bold">Our Mission</h3>
@@ -64,7 +209,7 @@ export default function AboutPage() {
                   </p>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-3 mission-item">
                   <div className="flex items-center gap-3">
                     <Award className="h-6 w-6 text-primary" />
                     <h3 className="text-2xl font-bold">Our Vision</h3>
@@ -75,7 +220,7 @@ export default function AboutPage() {
                   </p>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-3 mission-item">
                   <div className="flex items-center gap-3">
                     <Heart className="h-6 w-6 text-primary" />
                     <h3 className="text-2xl font-bold">Our Values</h3>
@@ -110,9 +255,9 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="order-1 md:order-2 relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
+            <div className="mission-image order-1 md:order-2 relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
               <Image
-                src="/placeholder.svg?height=400&width=600"
+                src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?q=80&w=2070&auto=format&fit=crop"
                 alt="Our Mission and Vision"
                 fill
                 className="object-cover"
@@ -123,7 +268,7 @@ export default function AboutPage() {
       </section>
 
       {/* Our Focus Areas */}
-      <section className="py-16 md:py-24 bg-muted/30">
+      <section ref={focusRef} className="py-16 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Focus Areas</h2>
@@ -132,7 +277,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <Tabs defaultValue="community" className="max-w-4xl mx-auto">
+          <Tabs defaultValue="community" className="max-w-4xl mx-auto tabs-container">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="community">Community Service</TabsTrigger>
               <TabsTrigger value="yoga">Yoga & Wellness</TabsTrigger>
@@ -143,7 +288,7 @@ export default function AboutPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="relative h-[300px] rounded-xl overflow-hidden">
                   <Image
-                    src="/placeholder.svg?height=300&width=500"
+                    src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?q=80&w=2070&auto=format&fit=crop"
                     alt="Community Service"
                     fill
                     className="object-cover"
@@ -178,7 +323,7 @@ export default function AboutPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="relative h-[300px] rounded-xl overflow-hidden">
                   <Image
-                    src="/placeholder.svg?height=300&width=500"
+                    src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=2070&auto=format&fit=crop"
                     alt="Yoga & Wellness"
                     fill
                     className="object-cover"
@@ -213,7 +358,7 @@ export default function AboutPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="relative h-[300px] rounded-xl overflow-hidden">
                   <Image
-                    src="/placeholder.svg?height=300&width=500"
+                    src="https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop"
                     alt="Nature Conservation"
                     fill
                     className="object-cover"
@@ -248,7 +393,7 @@ export default function AboutPage() {
       </section>
 
       {/* Our Journey */}
-      <section className="py-16 md:py-24">
+      <section ref={journeyRef} className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Journey</h2>
@@ -259,7 +404,7 @@ export default function AboutPage() {
 
           <div className="max-w-4xl mx-auto">
             <div className="space-y-12">
-              <div className="relative pl-10 md:pl-0">
+              <div className="journey-item relative pl-10 md:pl-0">
                 <div className="hidden md:block absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-border"></div>
 
                 <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-8 items-start">
@@ -281,7 +426,7 @@ export default function AboutPage() {
                   <div className="order-3 md:order-3">
                     <div className="relative h-32 w-full rounded-lg overflow-hidden">
                       <Image
-                        src="/placeholder.svg?height=128&width=200"
+                        src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop"
                         alt="Foundation Established"
                         fill
                         className="object-cover"
@@ -291,12 +436,12 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              <div className="relative pl-10 md:pl-0">
+              <div className="journey-item relative pl-10 md:pl-0">
                 <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-8 items-start">
                   <div className="order-3 md:order-1">
                     <div className="relative h-32 w-full rounded-lg overflow-hidden">
                       <Image
-                        src="/placeholder.svg?height=128&width=200"
+                        src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format&fit=crop"
                         alt="First Community Program"
                         fill
                         className="object-cover"
@@ -321,7 +466,7 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              <div className="relative pl-10 md:pl-0">
+              <div className="journey-item relative pl-10 md:pl-0">
                 <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-8 items-start">
                   <div className="md:text-right order-2 md:order-1">
                     <h3 className="text-xl font-bold">Yoga Initiative Begins</h3>
@@ -341,7 +486,7 @@ export default function AboutPage() {
                   <div className="order-3 md:order-3">
                     <div className="relative h-32 w-full rounded-lg overflow-hidden">
                       <Image
-                        src="/placeholder.svg?height=128&width=200"
+                        src="https://images.unsplash.com/photo-1599447292180-45fd84092ef4?q=80&w=2070&auto=format&fit=crop"
                         alt="Yoga Initiative Begins"
                         fill
                         className="object-cover"
@@ -351,12 +496,12 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              <div className="relative pl-10 md:pl-0">
+              <div className="journey-item relative pl-10 md:pl-0">
                 <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-8 items-start">
                   <div className="order-3 md:order-1">
                     <div className="relative h-32 w-full rounded-lg overflow-hidden">
                       <Image
-                        src="/placeholder.svg?height=128&width=200"
+                        src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2013&auto=format&fit=crop"
                         alt="Environmental Focus"
                         fill
                         className="object-cover"
@@ -381,7 +526,7 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              <div className="relative pl-10 md:pl-0">
+              <div className="journey-item relative pl-10 md:pl-0">
                 <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-8 items-start">
                   <div className="md:text-right order-2 md:order-1">
                     <h3 className="text-xl font-bold">Expanding Reach</h3>
@@ -401,7 +546,7 @@ export default function AboutPage() {
                   <div className="order-3 md:order-3">
                     <div className="relative h-32 w-full rounded-lg overflow-hidden">
                       <Image
-                        src="/placeholder.svg?height=128&width=200"
+                        src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=2070&auto=format&fit=crop"
                         alt="Expanding Reach"
                         fill
                         className="object-cover"
@@ -411,12 +556,12 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              <div className="relative pl-10 md:pl-0">
+              <div className="journey-item relative pl-10 md:pl-0">
                 <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-8 items-start">
                   <div className="order-3 md:order-1">
                     <div className="relative h-32 w-full rounded-lg overflow-hidden">
                       <Image
-                        src="/placeholder.svg?height=128&width=200"
+                        src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop"
                         alt="Present Day"
                         fill
                         className="object-cover"
@@ -445,54 +590,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Impact Numbers */}
-      <section className="py-16 md:py-24 bg-primary/5">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Impact</h2>
-            <p className="text-lg text-muted-foreground">
-              Numbers that reflect our journey and the difference we've made together.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <Users className="h-10 w-10 mx-auto text-primary mb-4" />
-                <div className="text-4xl font-bold mb-2">5,000+</div>
-                <p className="text-muted-foreground">People Impacted</p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <Leaf className="h-10 w-10 mx-auto text-primary mb-4" />
-                <div className="text-4xl font-bold mb-2">10,000+</div>
-                <p className="text-muted-foreground">Trees Planted</p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <Heart className="h-10 w-10 mx-auto text-primary mb-4" />
-                <div className="text-4xl font-bold mb-2">200+</div>
-                <p className="text-muted-foreground">Yoga Sessions</p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <BookOpen className="h-10 w-10 mx-auto text-primary mb-4" />
-                <div className="text-4xl font-bold mb-2">50+</div>
-                <p className="text-muted-foreground">Community Programs</p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
-      <section className="py-16 md:py-24">
+      <section ref={ctaRef} className="py-16 md:py-24 bg-primary/5">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Join Us in Making a Difference</h2>
@@ -514,4 +613,3 @@ export default function AboutPage() {
     </main>
   )
 }
-
