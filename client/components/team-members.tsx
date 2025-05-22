@@ -1,148 +1,122 @@
-"use client";
+"use client"
 
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { gsap } from "gsap";
+import { useEffect, useRef, useState } from "react"
+import Image from "next/image"
+import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import TeamCardStack from "@/components/team-card-stack"
 
 export default function TeamMembers() {
-  const containerRef = useRef<any>(null);
-  const founderMessage = useRef<any>(null);
-  const circlesRef = useRef<any[]>([]);
-  const [teamMembers, setTeamMembers] = useState<any[]>([]);
-  const [selectedMember, setSelectedMember] = useState<any>(null);
-  const [open, setOpen] = useState(false);
-  const animationRef = useRef<any>(null);
-  const velocitiesRef = useRef<any[]>([]);
-  const positionsRef = useRef<any[]>([]);
-  const circleSize = 450;
+  const founderMessage = useRef<HTMLDivElement | null>(null)
+  const leftColumnRef = useRef<HTMLDivElement | null>(null)
 
+  const [teamMembers, setTeamMembers] = useState<any[]>([])
+  const [selectedMember, setSelectedMember] = useState<any | null>(null)
+  const [open, setOpen] = useState(false)
+
+  // ────────────────────────────────────────────────────────────────────────────────
+  // Fetch members once on mount
+  // ────────────────────────────────────────────────────────────────────────────────
   useEffect(() => {
     fetch("/api/members")
       .then((res) => res.json())
-      .then((data) => {
-        setTeamMembers(data);
+      .then((data) => setTeamMembers(data))
+      .catch((error) => console.error("Error fetching members:", error))
+  }, [])
 
-        // Initialize positions and velocities
-        positionsRef.current = data.map(() => ({
-          x: Math.random() * 300,
-          y: Math.random() * 300,
-        }));
-
-        velocitiesRef.current = data.map(() => ({
-          vx: (Math.random() - 0.5) * 2,
-          vy: (Math.random() - 0.5) * 2,
-        }));
-      })
-      .catch((error) => console.error("Error fetching members:", error));
-  }, []);
-
+  // ────────────────────────────────────────────────────────────────────────────────
+  // GSAP Animations
+  // ────────────────────────────────────────────────────────────────────────────────
   useEffect(() => {
-    if (teamMembers.length === 0) return;
+    if (teamMembers.length === 0) return
 
-    const animate = () => {
-      if (!containerRef.current) return;
-
-      const containerRect = containerRef.current.getBoundingClientRect();
-
-      positionsRef.current.forEach((pos, index) => {
-        let { x, y } = pos;
-        let { vx, vy } = velocitiesRef.current[index];
-
-        x += vx * 2;
-        y += vy * 2;
-
-        if (x < 0 || x > containerRect.width - circleSize) {
-          velocitiesRef.current[index].vx *= -1;
-        }
-
-        if (y < 0 || y > containerRect.height - circleSize) {
-          velocitiesRef.current[index].vy *= -1;
-        }
-
-        positionsRef.current[index] = { x, y };
-
-        gsap.to(circlesRef.current[index], {
-          x,
-          y,
-          duration: 0.5,
-          ease: "power1.out",
-        });
-      });
-
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    animationRef.current = requestAnimationFrame(animate);
-
-    return () => cancelAnimationFrame(animationRef.current);
-  }, [teamMembers]);
-
-  useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
 
-    const Message = founderMessage.current
-
-    gsap.fromTo(
-      Message,
-      { opacity: 0, scale: 0.8 },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 1,
-        scrollTrigger: {
-          trigger: Message,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
+    // Animate founder message fade‑in
+    if (founderMessage.current) {
+      gsap.fromTo(
+        founderMessage.current,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: founderMessage.current,
+            start: "top 80%",
+          },
         },
-      },
-    )}
-  ,[])
+      )
+    }
 
+    // Animate left column
+    if (leftColumnRef.current) {
+      gsap.fromTo(
+        leftColumnRef.current,
+        { opacity: 0, x: -50 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: leftColumnRef.current,
+            start: "top 80%",
+          },
+        },
+      )
+    }
+  }, [teamMembers])
+
+  // ────────────────────────────────────────────────────────────────────────────────
+  // Render
+  // ────────────────────────────────────────────────────────────────────────────────
   return (
-    <section className=" py-16 md:py-24 relative overflow-hidden ">
-      <div className="container  mx-auto px-4 ">
-        <div ref={founderMessage} className="max-w-4xl mx-auto text-center mb-16 bg-red-100 p-6 rounded-lg shadow-lg">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Team</h2>
-          <p className="text-lg text-muted-foreground">
-            Meet the dedicated individuals who make our mission possible through their passion and expertise.
-          </p>
-        </div>
-        <div ref={containerRef} className="relative h-[500px] md:h-[600px] border border-border rounded-xl bg-muted/30 mx-auto max-w-4xl overflow-hidden">
-          {teamMembers.map((member, index) => (
-            <div
-              key={member._id}
-              ref={(el) => (circlesRef.current[index] = el)}
-              className="absolute cursor-pointer transition-transform"
-              style={{
-                width: `${circleSize}px`,
-                height: `${circleSize}px`,
-                transform: `translate(${positionsRef.current[index]?.x || 0}px, ${positionsRef.current[index]?.y || 0}px)`,
-              }}
-              onClick={() => {
-                setSelectedMember(member);
-                setOpen(true);
-              }}
-            >
-              <div className="relative w-12 h-12 rounded-full overflow-hidden mb-1">
-                <Image src={member.image || "/placeholder.svg"} alt={member.name} fill className="object-cover" />
-              </div>
-              <h3 className="text-xs font-medium line-clamp-1">{member.name}</h3>
-              <p className="text-[10px] text-muted-foreground line-clamp-1">{member.role}</p>
+    <section className="relative py-16 md:py-24 overflow-hidden">
+      {/* Gradient background */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-sky-50 via-sky-100 to-blue-200 bg-[length:200%_200%]" />
+
+      <div className="container mx-auto px-4">
+        {/* Two-column layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+          {/* Left column - Team info */}
+          <div ref={leftColumnRef} className="flex flex-col justify-center">
+            <div className="bg-white/80 backdrop-blur-sm p-8 rounded-lg shadow-lg">
+              <h3 className="text-2xl font-bold mb-4 text-slate-900">Meet Our Experts</h3>
+              <p className="text-slate-700 mb-6">
+                Our team brings together diverse talents and expertise to deliver exceptional results. Each member
+                contributes unique skills and perspectives that drive our success.
+              </p>
+              <p className="text-slate-700 mb-6">
+                With backgrounds spanning various industries and disciplines, our team members share a common commitment
+                to excellence and innovation.
+              </p>
+              <p className="text-slate-700">
+                Swipe through the cards to learn more about each team member and their contributions to our mission.
+              </p>
             </div>
-          ))}
+          </div>
+
+          {/* Right column - Card stack */}
+          <div className="h-[600px]">{teamMembers.length > 0 && <TeamCardStack teamMembers={teamMembers} />}</div>
         </div>
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-sky-400 via-sky-500 to-blue-500 bg-[length:200%_200%] rotate-[-45deg]"></div>
       </div>
 
+      {/* Dialog (modal) for full member bio */}
       <Dialog open={open} onOpenChange={setOpen}>
         {selectedMember && (
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <div className="flex items-center gap-4">
                 <div className="relative w-16 h-16 rounded-full overflow-hidden">
-                  <Image src={selectedMember.image || "/placeholder.svg"} alt={selectedMember.name} fill className="object-cover" />
+                  <Image
+                    src={selectedMember.image || "/placeholder.svg"}
+                    alt={selectedMember.name}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <div>
                   <DialogTitle>{selectedMember.name}</DialogTitle>
@@ -150,12 +124,12 @@ export default function TeamMembers() {
                 </div>
               </div>
             </DialogHeader>
-            <div className="mt-4">
+            <div className="mt-4 prose max-w-none">
               <p>{selectedMember.bio}</p>
             </div>
           </DialogContent>
         )}
       </Dialog>
     </section>
-  );
+  )
 }
