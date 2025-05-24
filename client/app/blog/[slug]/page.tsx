@@ -6,7 +6,7 @@ import { formatDate } from "@/lib/utils"
 
 async function getBlogPost(slug: string) {
   try {
-    const res = await fetch(`http://localhost:3000/api/blog/${slug}`, {
+    const res = await fetch(`https://aatmanfoundation.netlify.app/api/blog/${slug}`, {
       cache: "no-store",
     })
     if (!res.ok) {

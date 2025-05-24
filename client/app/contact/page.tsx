@@ -191,7 +191,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg">Our Location</h3>
-                    <p className="text-muted-foreground">Bikaner, Rajasthan, India</p>
+                    <p className="text-muted-foreground">Apex events & Production kk colony, Bikaner, Rajasthan, India</p>
                   </div>
                 </div>
 
@@ -201,8 +201,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg">Email Us</h3>
-                    <p className="text-muted-foreground">info@aatmanfoundation.org</p>
-                    <p className="text-muted-foreground">support@aatmanfoundation.org</p>
+                    <p className="text-muted-foreground">aatmanfoundation72@gmail.com</p>
                   </div>
                 </div>
 
@@ -212,7 +211,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg">Call Us</h3>
-                    <p className="text-muted-foreground">+91 7296981032</p>
+                    <p className="text-muted-foreground">+917296981032</p>
                   </div>
                 </div>
               </div>

@@ -24,7 +24,7 @@ export function ScrollProvider({ children }) {
         const locoScroll = new LocomotiveScroll({
           el: scrollRef.current,
           smooth: true,
-          lerp: 0.08,
+          lerp: 1,
           smartphone: {
             smooth: true,
           },

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useLayoutEffect,useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -12,143 +12,135 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 export default function AboutPage() {
   // Refs for animation targets
-  const heroRef = useRef(null)
-  const missionRef = useRef(null)
-  const focusRef = useRef(null)
-  const journeyRef = useRef(null)
-  const ctaRef = useRef(null)
+  const heroRef = useRef<HTMLElement | null>(null)
+  const missionRef = useRef<HTMLElement | null>(null)
+  const focusRef = useRef<HTMLElement | null>(null)
+  const journeyRef = useRef<HTMLElement | null>(null)
+  const ctaRef = useRef<HTMLElement | null>(null)
 
-  useEffect(() => {
-    // Register ScrollTrigger plugin
+  useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
 
-    // Hero section animation
-    gsap.fromTo(
-      heroRef.current?.querySelector(".hero-content"),
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: "power3.out",
-      },
-    )
+    // Use GSAP context – keeps animations scoped and easy to clean up
+    const ctx = gsap.context(() => {
+      /** HERO */
+      if (heroRef.current) {
+        const heroContent = heroRef.current.querySelector(".hero-content")
+        const heroImage = heroRef.current.querySelector(".hero-image")
 
-    gsap.fromTo(
-      heroRef.current?.querySelector(".hero-image"),
-      { opacity: 0, scale: 0.8 },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 1.2,
-        delay: 0.3,
-        ease: "back.out(1.7)",
-      },
-    )
+        heroContent &&
+          gsap.fromTo(
+            heroContent,
+            { opacity: 0, y: 50 },
+            { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
+          )
 
-    // Mission & Vision animation
-    gsap.fromTo(
-      missionRef.current?.querySelectorAll(".mission-item"),
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: missionRef.current,
-          start: "top 80%",
-        },
-      },
-    )
+        heroImage &&
+          gsap.fromTo(
+            heroImage,
+            { opacity: 0, scale: 0.8 },
+            { opacity: 1, scale: 1, duration: 1.2, delay: 0.3, ease: "back.out(1.7)" },
+          )
+      }
 
-    gsap.fromTo(
-      missionRef.current?.querySelector(".mission-image"),
-      { opacity: 0, x: 50 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 1,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: missionRef.current,
-          start: "top 80%",
-        },
-      },
-    )
+      /** MISSION & VISION */
+      if (missionRef.current) {
+        const missionItems = missionRef.current.querySelectorAll(".mission-item")
+        if (missionItems.length)
+          gsap.fromTo(
+            missionItems,
+            { opacity: 0, y: 30 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              stagger: 0.2,
+              ease: "power2.out",
+              scrollTrigger: { trigger: missionRef.current, start: "top 80%" },
+            },
+          )
 
-    // Focus Areas animation
-    gsap.fromTo(
-      focusRef.current?.querySelector("h2"),
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: focusRef.current,
-          start: "top 80%",
-        },
-      },
-    )
+        const missionImage = missionRef.current.querySelector(".mission-image")
+        missionImage &&
+          gsap.fromTo(
+            missionImage,
+            { opacity: 0, x: 50 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 1,
+              ease: "power2.out",
+              scrollTrigger: { trigger: missionRef.current, start: "top 80%" },
+            },
+          )
+      }
 
-    gsap.fromTo(
-      focusRef.current?.querySelector(".tabs-container"),
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        delay: 0.3,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: focusRef.current,
-          start: "top 80%",
-        },
-      },
-    )
+      /** FOCUS AREAS */
+      if (focusRef.current) {
+        const focusHeading = focusRef.current.querySelector("h2")
+        focusHeading &&
+          gsap.fromTo(
+            focusHeading,
+            { opacity: 0, y: 30 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power2.out",
+              scrollTrigger: { trigger: focusRef.current, start: "top 80%" },
+            },
+          )
 
-    // Journey animation
-    const journeyItems = journeyRef.current?.querySelectorAll(".journey-item")
-    journeyItems?.forEach((item) => {
-      gsap.fromTo(
-        item,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: item,
-            start: "top 85%",
+        const tabsContainer = focusRef.current.querySelector(".tabs-container")
+        tabsContainer &&
+          gsap.fromTo(
+            tabsContainer,
+            { opacity: 0, y: 30 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              delay: 0.3,
+              ease: "power2.out",
+              scrollTrigger: { trigger: focusRef.current, start: "top 80%" },
+            },
+          )
+      }
+
+      /** JOURNEY */
+      const journeyItems = journeyRef.current?.querySelectorAll(".journey-item") ?? []
+      journeyItems.forEach((item) => {
+        gsap.fromTo(
+          item,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: { trigger: item, start: "top 85%" },
           },
-        },
-      )
+        )
+      })
+
+      /** CTA */
+      if (ctaRef.current) {
+        gsap.fromTo(
+          ctaRef.current,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: { trigger: ctaRef.current, start: "top 85%" },
+          },
+        )
+      }
     })
 
-    // CTA animation
-    gsap.fromTo(
-      ctaRef.current,
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ctaRef.current,
-          start: "top 85%",
-        },
-      },
-    )
-
-    // Cleanup function
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-    }
+    // Cleanup on unmount
+    return () => ctx.revert()
   }, [])
 
   return (
@@ -173,9 +165,9 @@ export default function AboutPage() {
                 </Button>
               </div>
             </div>
-            <div className="hero-image relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
+            <div className="hero-image relative h-[300px] md:h-[500px] rounded-xl overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1593113630400-ea4288922497?q=80&w=2070&auto=format&fit=crop"
+                src="/Event/Change.webp"
                 alt="Aatman Foundation Team"
                 fill
                 className="object-cover"
@@ -278,7 +270,7 @@ export default function AboutPage() {
           </div>
 
           <Tabs defaultValue="community" className="max-w-4xl mx-auto tabs-container">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-1 mb-20 md:grid-cols-3">
               <TabsTrigger value="community">Community Service</TabsTrigger>
               <TabsTrigger value="yoga">Yoga & Wellness</TabsTrigger>
               <TabsTrigger value="nature">Nature Conservation</TabsTrigger>
@@ -288,7 +280,7 @@ export default function AboutPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="relative h-[300px] rounded-xl overflow-hidden">
                   <Image
-                    src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?q=80&w=2070&auto=format&fit=crop"
+                    src="/Event/donation.webp"
                     alt="Community Service"
                     fill
                     className="object-cover"
@@ -323,7 +315,7 @@ export default function AboutPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="relative h-[300px] rounded-xl overflow-hidden">
                   <Image
-                    src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=2070&auto=format&fit=crop"
+                    src="/Event/yoga.webp"
                     alt="Yoga & Wellness"
                     fill
                     className="object-cover"
@@ -358,7 +350,7 @@ export default function AboutPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="relative h-[300px] rounded-xl overflow-hidden">
                   <Image
-                    src="https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop"
+                    src="/Event/plantation.webp"
                     alt="Nature Conservation"
                     fill
                     className="object-cover"

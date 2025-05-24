@@ -1,0 +1,51 @@
+[
+ {  "_id": "1",
+    "name": "Divyansh Gaur",
+    "role": "Founder",
+    "bio": "Divyansh leads the vision of the team, ensuring innovation and impact.",
+    "image": "/team/divyansh_gaur.webp"
+  },
+   { "_id": "2",
+    "name": "Prerna Dadlich",
+    "role": "Team Member",
+    "bio": "Prerna crafts campaigns that elevate the team's work to broader audiences.",
+    "image": "/team/Prerna_Dadlich.Webp"
+  },
+  { "_id": "3",
+    "name": "Aditya Soni",
+    "role": "Team Member",
+    "bio": "Aditya is a detail-oriented developer passionate about crafting efficient code.",
+    "image": "/team/Aditya_soni.Webp"
+  },
+  { "_id": "4",
+    "name": "Anuj Modi",
+    "role": "Team Member",
+    "bio": "Anuj works on building scalable APIs and managing server infrastructure.",
+    "image": "/team/Anuj_modi.Webp"
+  },
+  { "_id": "5",
+    "name": "Bhavya Khatri",
+    "role": "Team Member",
+    "bio": "Bhavya designs and implements sleek interfaces for modern web applications.",
+    "image": "/team/Bhavya_khatri.Webp"
+  },
+  { "_id": "6",
+    "name": "Disha Kachwaha",
+    "role": "Team Member",
+    "bio": "Disha keeps the team organized and ensures timely delivery of projects.",
+    "image": "/team/Disha_Kachwaha.Webp"
+  },
+  
+  { "_id": "7",
+    "name": "Kirti Shrimali",
+    "role": "Team Member",
+    "bio": "Kirti focuses on designing user-centric experiences with beautiful visuals.",
+    "image": "/team/Kirti_shrimali.Webp"
+  },
+  { "_id": "8",
+    "name": "Nidhi Purohit",
+    "role": "Team Member",
+    "bio": "Nidhi brings wellness and balance to the team with her yoga expertise.",
+    "image": "/team/Nidhi_purohit.Webp"
+  }
+]

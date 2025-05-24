@@ -13,7 +13,7 @@ export default function Footer() {
               <span className="text-2xl font-bold">Aatman</span>
               <span className="text-primary font-medium">Foundation</span>
             </Link>
-            <p className="text-muted-foreground">Dedicated to community service, yoga, and nature conservation.</p>
+            <p className="text-muted-foreground">Dedicated to community service, one's wellness, and nature conservation.</p>
             <div className="flex space-x-4">
               <Link href="#" className="text-muted-foreground hover:text-primary">
                 <Facebook className="h-5 w-5" />
@@ -79,15 +79,15 @@ export default function Footer() {
             <ul className="space-y-2">
               <li className="flex items-start space-x-2">
                 <MapPin className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-muted-foreground">123 Harmony Road, New Delhi, India</span>
+                <span className="text-muted-foreground">Apex events & Production kk colony, Bikaner, Rajasthan, India</span>
               </li>
               <li className="flex items-center space-x-2">
                 <Phone className="h-5 w-5 text-primary shrink-0" />
-                <span className="text-muted-foreground">+91 98765 43210</span>
+                <span className="text-muted-foreground">+917296981032</span>
               </li>
               <li className="flex items-center space-x-2">
                 <Mail className="h-5 w-5 text-primary shrink-0" />
-                <span className="text-muted-foreground">info@aatmanfoundation.org</span>
+                <span className="text-muted-foreground">aatmanfoundation72@gmail.com</span>
               </li>
             </ul>
           </div>

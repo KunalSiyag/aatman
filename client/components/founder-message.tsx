@@ -22,11 +22,13 @@ export default function FounderMessage() {
 
     gsap.fromTo(
       quote,
-      { opacity: 0, scale: 0.8 },
+      { opacity: 0, scale: 0 },
       {
         opacity: 1,
         scale: 1,
         duration: 1,
+        stagger: 0.2,
+        ease: "power2.out",
         scrollTrigger: {
           trigger: section,
           start: "top 80%",
@@ -37,7 +39,7 @@ export default function FounderMessage() {
 
     gsap.fromTo(
       image,
-      { opacity: 0, x: -50 },
+      { opacity: 0, x: -100 },
       {
         opacity: 1,
         x: 0,
@@ -53,7 +55,7 @@ export default function FounderMessage() {
 
     gsap.fromTo(
       text,
-      { opacity: 0, y: 30 },
+      { opacity: 0, y: 100 },
       {
         opacity: 1,
         y: 0,
@@ -84,10 +86,10 @@ export default function FounderMessage() {
           {/* Image with Background Color */}
           <div
             ref={imageRef}
-            className="relative h-64 md:h-80 w-full rounded-lg overflow-hidden bg-yellow-100 shadow-lg"
+            className="relative h-64 md:h-96 w-full rounded-lg overflow-hidden bg-yellow-100 shadow-lg"
           >
             <Image
-              src="/placeholder.svg?height=320&width=320"
+              src="/Event/FounderMessage.webp"
               alt="Divyansh Gaur - Founder"
               fill
               className="object-cover"

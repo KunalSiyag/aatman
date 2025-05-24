@@ -38,7 +38,7 @@ export default function TeamCardStack({ teamMembers }: { teamMembers: TeamMember
 
       for (const member of teamMembers) {
         try {
-          const img = new Image()
+          const img = new window.Image()
           img.crossOrigin = "Anonymous"
           img.src = member.image || "/placeholder.svg"
 
@@ -156,7 +156,7 @@ export default function TeamCardStack({ teamMembers }: { teamMembers: TeamMember
           y: yOffset,
           x: xOffset,
           scale: 1 - index * 0.04,
-          rotateZ: index * -3, // Slight rotation for each card
+          rotateZ: index * -5, // Slight rotation for each card
         }}
         exit={{
           opacity: 0,
@@ -216,7 +216,7 @@ export default function TeamCardStack({ teamMembers }: { teamMembers: TeamMember
           {/* Card Image */}
           <div className="mt-2 overflow-hidden px-4">
             <div className="aspect-video w-full overflow-hidden rounded-xl bg-cover bg-center relative">
-              <Image src={member.image || "/placeholder.svg"} alt={member.name} fill className="object-cover" />
+              <Image src={member.image || "/placeholder.svg"} alt={member.name} fill className="object-cover object-[center_15%]" />
             </div>
           </div>
 

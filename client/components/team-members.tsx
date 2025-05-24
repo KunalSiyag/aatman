@@ -6,24 +6,25 @@ import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import TeamCardStack from "@/components/team-card-stack"
+import Team from "@/lib/TeamData.json"
 
 export default function TeamMembers() {
   const founderMessage = useRef<HTMLDivElement | null>(null)
   const leftColumnRef = useRef<HTMLDivElement | null>(null)
 
-  const [teamMembers, setTeamMembers] = useState<any[]>([])
+  const [teamMembers, setTeamMembers] = useState(Team);
   const [selectedMember, setSelectedMember] = useState<any | null>(null)
   const [open, setOpen] = useState(false)
-
+  
   // ────────────────────────────────────────────────────────────────────────────────
   // Fetch members once on mount
   // ────────────────────────────────────────────────────────────────────────────────
-  useEffect(() => {
-    fetch("/api/members")
-      .then((res) => res.json())
-      .then((data) => setTeamMembers(data))
-      .catch((error) => console.error("Error fetching members:", error))
-  }, [])
+  // useEffect(() => {
+  //   fetch("/api/members")
+  //     .then((res) => res.json())
+  //     .then((data) => setTeamMembers(data))
+  //     .catch((error) => console.error("Error fetching members:", error))
+  // }, [])
 
   // ────────────────────────────────────────────────────────────────────────────────
   // GSAP Animations
@@ -74,10 +75,8 @@ export default function TeamMembers() {
   // Render
   // ────────────────────────────────────────────────────────────────────────────────
   return (
-    <section className="relative py-16 md:py-24 overflow-hidden">
+    <section className="relative py-16 md:py-24 bg-muted/30 overflow-hidden">
       {/* Gradient background */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-sky-50 via-sky-100 to-blue-200 bg-[length:200%_200%]" />
-
       <div className="container mx-auto px-4">
         {/* Two-column layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">

@@ -1,0 +1,19 @@
+[{
+      "title" : "Compassion in Action",
+      "description" :
+        "Join our heartfelt mission to provide care and support to animals in need, from street dogs to cows. Together, let's create a world where every creature is treated with kindness and dignity.",
+      "image": "/cow2.jpeg" 
+    },
+    {
+      "title": "Green Futures",
+      "description":
+        "Step into a greener tomorrow! Be a part of our tree plantation drive and contribute to creating a sustainable and thriving planet for generations to come.",
+      "image": "/nature.jpeg"
+    },
+    {
+      "title": "Harmony for Humanity",
+      "description":
+        "Discover the power of yoga and wellness in transforming lives. Embrace peace, harmony, and vitality through programs designed to nurture both body and soul.",
+      "image": "/yoga.jpeg"
+    }  
+]

@@ -1,125 +1,205 @@
-"use client";
+"use client"
 
-import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useState, useRef, useEffect } from "react"
+import { gsap } from "gsap"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import slides from "@/lib/SliderData.json"
+import { cn } from "@/lib/utils"
 
+/**
+ * HeroSlider – Mission Impossible‐style intro
+ * ------------------------------------------------------------
+ * Sequence per slide:
+ *   1. Text appears on full black background (left-aligned)
+ *   2. Black background slowly reveals the image behind
+ *   3. Text remains left-aligned with cinematic positioning
+ */
 export default function HeroSlider() {
-  const [activeSlide, setActiveSlide] = useState(0);
-  const slidesRef = useRef([]);
-  const totalSlides = 3;
+  const [activeSlide, setActiveSlide] = useState(0)
+  const arrowLeftRef = useRef(null)
+  const arrowRightRef = useRef(null)
+  const totalSlides = slides.length
 
-  const slides = [
-    {
-      title: "Compassion in Action: Caring for Our Voiceless Friends",
-      description:
-        "Join our heartfelt mission to provide care and support to animals in need, from street dogs to cows. Together, let's create a world where every creature is treated with kindness and dignity.",
-      image: "/cow2.jpeg", 
-    },
-    {
-      title: "Green Futures: A Tree Plantation Drive",
-      description:
-        "Step into a greener tomorrow! Be a part of our tree plantation drive and contribute to creating a sustainable and thriving planet for generations to come.",
-      image: "/nature.jpeg",
-    },
-    {
-      title: "Harmony for Humanity: Promoting Yoga & Wellness",
-      description:
-        "Discover the power of yoga and wellness in transforming lives. Embrace peace, harmony, and vitality through programs designed to nurture both body and soul.",
-      image: "/yoga.jpeg", 
-    },
-  ];
-  
-
+  /* Arrow micro‑anim */
   useEffect(() => {
-    slidesRef.current.forEach((slide, index) => {
-      gsap.set(slide, {
-        opacity: index === activeSlide ? 1 : 0,
-        x: index === activeSlide ? 0 : 100,
-      });
-    });
-  }, []);
+    if (arrowLeftRef.current && arrowRightRef.current) {
+      gsap.fromTo(
+        [arrowLeftRef.current, arrowRightRef.current],
+        { y: -4 },
+        { y: 4, duration: 1, repeat: -1, yoyo: true, ease: "power1.inOut" },
+      )
+    }
+  }, [])
 
-  useEffect(() => {
-    slidesRef.current.forEach((slide, index) => {
-      gsap.to(slide, {
-        opacity: index === activeSlide ? 1 : 0,
-        x: index === activeSlide ? 0 : index < activeSlide ? -100 : 100,
-        duration: 0.8,
-        ease: "power3.out",
-      });
-    });
-  }, [activeSlide]);
+  const next = () => setActiveSlide((p) => (p + 1) % totalSlides)
+  const prev = () => setActiveSlide((p) => (p - 1 + totalSlides) % totalSlides)
 
-  const nextSlide = () => {
-    setActiveSlide((prev) => (prev + 1) % totalSlides);
-  };
+  /* ─ Variants ─ */
+  const titleVar = {
+    initial: {
+      opacity: 0,
+      x: -50,
+      y: 0,
+    },
+    animate: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      transition: {
+        duration: 1.2,
+        ease: "easeOut",
+        delay: 0.3,
+      },
+    },
+    exit: {
+      opacity: 0,
+      x: -30,
+      transition: { duration: 0.6, ease: "easeIn" },
+    },
+  } as const
 
-  const prevSlide = () => {
-    setActiveSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
-  };
+  const overlayVar = {
+    initial: { opacity: 1 }, // solid black start
+    animate: {
+      opacity: 0,
+      transition: {
+        duration: 2.5,
+        ease: "easeInOut",
+        delay: 1.5,
+      },
+    },
+    exit: {
+      opacity: 1,
+      transition: { duration: 0.8 },
+    },
+  } as const
+
+  const imageVar = {
+    initial: {
+      opacity: 0,
+      scale: 1.1,
+    },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 2.5,
+        ease: "easeOut",
+        delay: 1.5,
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 1.05,
+      transition: { duration: 0.8, ease: "easeIn" },
+    },
+  } as const
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
-      {slides.map((slide, index) => (
-        <div
-          key={index}
-          ref={(el) => (slidesRef.current[index] = el)}
-          className={cn(
-            "absolute inset-0 flex items-center justify-center transition-opacity duration-500"
-          )}
-          style={{
-            opacity: index === activeSlide ? 1 : 0,
-            backgroundImage: `url(${slide.image})`, // Set the background image
-            backgroundSize: "cover", // Ensure the image covers the whole section
-            backgroundPosition: "center", // Center the image
-            backgroundRepeat: "no-repeat", // Prevent the image from repeating
-          }}
-        >
-          <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div className="text-center lg:text-left z-10">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight text-white">
-                {slide.title}
-              </h1>
-              <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-lg mx-auto lg:mx-0">
-                {slide.description}
-              </p>
-            </div>
-          </div>
-        </div>
-      ))}
+    <section className="relative h-screen w-full overflow-hidden select-none">
+      <AnimatePresence mode="wait">
+        {slides.map((slide, i) =>
+          i === activeSlide ? (
+            <motion.div
+              key={i}
+              className="absolute inset-0"
+              variants={imageVar}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              style={{
+                backgroundImage: `url(${slide.image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
+              {/* Black overlay that fades to reveal image */}
+              <motion.div className="absolute inset-0 bg-black" variants={overlayVar} />
 
-      <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-20">
-        {Array.from({ length: totalSlides }).map((_, index) => (
+              {/* Text container with full height and left alignment */}
+              <div className="absolute inset-0 z-10 flex items-center">
+                <div className="w-full max-w-4xl px-8 md:px-16 lg:px-24">
+                  <motion.h1
+                    className="text-left font-bold tracking-tight text-white leading-tight"
+                    style={{
+                      fontSize: "clamp(3rem, 8vw, 8rem)",
+                      lineHeight: 0.9,
+                      textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+                    }}
+                    variants={titleVar}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    {slide.title}
+                  </motion.h1>
+
+                  {/* Optional subtitle or description */}
+                  {slide.description && (
+                    <motion.p
+                      className="mt-6 text-left text-lg md:text-xl text-white/90 max-w-2xl"
+                      style={{
+                        textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
+                      }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                        transition: {
+                          duration: 1,
+                          delay: 2.2,
+                          ease: "easeOut",
+                        },
+                      }}
+                      exit={{
+                        opacity: 0,
+                        y: 10,
+                        transition: { duration: 0.5 },
+                      }}
+                    >
+                      {slide.description}
+                    </motion.p>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ) : null,
+        )}
+      </AnimatePresence>
+
+      {/* Dots */}
+      <div className="absolute bottom-8 left-0 right-0 z-20 flex justify-center gap-2">
+        {Array.from({ length: totalSlides }).map((_, i) => (
           <button
-            key={index}
-            onClick={() => setActiveSlide(index)}
+            key={i}
+            onClick={() => setActiveSlide(i)}
             className={cn(
-              "w-3 h-3 rounded-full transition-all",
-              index === activeSlide ? "bg-primary w-6" : "bg-muted-foreground/30"
+              "h-3 w-3 rounded-full transition-all duration-300",
+              i === activeSlide ? "w-6 bg-white" : "bg-white/30 hover:bg-white/50",
             )}
-            aria-label={`Go to slide ${index + 1}`}
+            aria-label={`Go to slide ${i + 1}`}
           />
         ))}
       </div>
 
+      {/* Arrows */}
       <button
-        onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/80 rounded-full p-2 backdrop-blur-sm z-20"
+        ref={arrowLeftRef}
+        onClick={prev}
+        className="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/50 p-3 backdrop-blur-sm hover:bg-black/70 transition-colors"
         aria-label="Previous slide"
       >
-        <ChevronLeft className="h-6 w-6" />
+        <ChevronLeft className="h-6 w-6 text-white" />
       </button>
       <button
-        onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/80 rounded-full p-2 backdrop-blur-sm z-20"
+        ref={arrowRightRef}
+        onClick={next}
+        className="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/50 p-3 backdrop-blur-sm hover:bg-black/70 transition-colors"
         aria-label="Next slide"
       >
-        <ChevronRight className="h-6 w-6" />
+        <ChevronRight className="h-6 w-6 text-white" />
       </button>
     </section>
-  );
+  )
 }

@@ -8,7 +8,7 @@ import { Menu } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ModeToggle } from "@/components/mode-toggle"
 import { usePathname } from "next/navigation"
-
+import Image from "next/image"
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
@@ -32,12 +32,18 @@ export default function Header() {
     <header
       className={cn(
         "fixed top-0 w-full z-50 transition-all duration-300",
-        isScrolled ? "bg-background/80 backdrop-blur-md shadow-sm" : "bg-transparent",
+        isScrolled ? "bg-background/80 backdrop-blur-md shadow-sm" : "bg-background/0",
       )}
     >
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center space-x-2">
-          <span className="text-2xl font-bold">Aatman</span>
+      <div className="container mx-auto flex h-20 items-center justify-between px-4">
+        <Link href="/" className="flex items-center justify-center space-x-2">
+        <Image 
+          src="/Logo2.png" 
+          alt="Foundation Logo" 
+          width={100} 
+          height={100} 
+         className="h-16 w-28 object-cover" 
+          />
           <span className="text-primary font-medium">Foundation</span>
         </Link>
 
@@ -76,7 +82,7 @@ export default function Header() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "text-sm font-medium transition-colors hover:text-primary py-2",
+                      "text-2xl font-medium transition-colors hover:text-primary py-2",
                       pathname === item.href ? "text-primary" : "text-muted-foreground",
                     )}
                   >
