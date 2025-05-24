@@ -104,31 +104,37 @@ export default function TeamMembers() {
       </div>
 
       {/* Dialog (modal) for full member bio */}
-      <Dialog open={open} onOpenChange={setOpen}>
-        {selectedMember && (
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <div className="flex items-center gap-4">
-                <div className="relative w-16 h-16 rounded-full overflow-hidden">
-                  <Image
-                    src={selectedMember.image || "/placeholder.svg"}
-                    alt={selectedMember.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <DialogTitle>{selectedMember.name}</DialogTitle>
-                  <DialogDescription>{selectedMember.role}</DialogDescription>
-                </div>
-              </div>
-            </DialogHeader>
-            <div className="mt-4 prose max-w-none">
-              <p>{selectedMember.bio}</p>
-            </div>
-          </DialogContent>
-        )}
-      </Dialog>
+   <Dialog open={open} onOpenChange={setOpen}>
+  {selectedMember && (
+    <DialogContent className="sm:max-w-md">
+      <DialogHeader>
+        <DialogTitle>
+          {selectedMember.name || "Team Member"} {/* Fallback for screen readers */}
+        </DialogTitle>
+        <DialogDescription>
+          {selectedMember.role || "Team Member Bio"}
+        </DialogDescription>
+      </DialogHeader>
+
+      <div className="flex items-center gap-4 mt-4">
+        <div className="relative w-16 h-16 rounded-full overflow-hidden">
+          <Image
+            src={selectedMember.image || "/placeholder.svg"}
+            alt={selectedMember.name || "Team member"}
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div className="text-muted-foreground">{selectedMember.role}</div>
+      </div>
+
+      <div className="mt-4 prose max-w-none">
+        <p>{selectedMember.bio || "No bio available."}</p>
+      </div>
+    </DialogContent>
+  )}
+</Dialog>
+
     </section>
   )
 }

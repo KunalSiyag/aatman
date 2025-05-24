@@ -3,6 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft, Calendar, User, Tag } from "lucide-react"
 import { formatDate } from "@/lib/utils"
+export const dynamic = 'force-dynamic';
 
 async function getBlogPost(slug: string) {
   try {

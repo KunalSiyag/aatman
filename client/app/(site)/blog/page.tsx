@@ -2,6 +2,7 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/comp
 import Link from "next/link"
 import Image from "next/image"
 import { formatDate } from "@/lib/utils"
+export const dynamic = 'force-dynamic';
 
 async function getBlogPosts() {
   try {

@@ -73,7 +73,7 @@ export default function FounderMessage() {
   return (
     <section ref={sectionRef} className="relative py-16 md:py-24 overflow-hidden">
       {/* Background Stripes */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-red-500 via-yellow-500 via-green-500 to-blue-500 bg-[length:200%_200%] rotate-[45deg]"></div>
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-red-500 via-yellow-500 to-blue-500 bg-[length:200%_200%] rotate-[45deg]"></div>
 
       <div className="container mx-auto px-4">
         {/* Section Header with Color */}

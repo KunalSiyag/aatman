@@ -27,8 +27,8 @@ import { Heart, Users, Leaf, BookOpen, CheckCircle2 } from "lucide-react"
  *    const MERCHANT = "Your Organisation"    // display name in UPI apps
  */
 
-const UPI_ID = "example@upi" // TODO: replace with real VPA
-const MERCHANT = "Your Organisation"
+const UPI_ID = "divyanshgaur7296@oksbi" // TODO: replace with real VPA
+const MERCHANT = "Aatman Foundation"
 
 export default function DonatePage() {
   /* ------------------------------------------------------------------ */

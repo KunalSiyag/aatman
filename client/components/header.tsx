@@ -2,22 +2,21 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { ModeToggle } from "@/components/mode-toggle"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
+import { Menu } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { ModeToggle } from "@/components/mode-toggle"
+
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-    }
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 10)
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -32,21 +31,26 @@ export default function Header() {
     <header
       className={cn(
         "fixed top-0 w-full z-50 transition-all duration-300",
-        isScrolled ? "bg-background/80 backdrop-blur-md shadow-sm" : "bg-background/0",
+        isScrolled
+          ? "bg-background/80 backdrop-blur-md shadow-sm"
+          : "bg-background/0"
       )}
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4">
-        <Link href="/" className="flex items-center justify-center space-x-2">
-        <Image 
-          src="/Logo2.png" 
-          alt="Foundation Logo" 
-          width={100} 
-          height={100} 
-         className="h-16 w-28 object-cover" 
+        {/* Logo */}
+        <Link href="/" className="flex items-center space-x-2">
+          <Image
+            src="/Logo2.png"
+            alt="Foundation Logo"
+            width={112}
+            height={64}
+            className="object-contain h-16 w-28"
+            priority
           />
-          <span className="text-primary font-medium">Foundation</span>
+          <span className="text-lg font-semibold text-primary">Foundation</span>
         </Link>
 
+        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-6">
           {navItems.map((item) => (
             <Link
@@ -54,45 +58,60 @@ export default function Header() {
               href={item.href}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                pathname === item.href ? "text-primary" : "text-muted-foreground",
+                pathname === item.href
+                  ? "text-primary"
+                  : "text-muted-foreground"
               )}
             >
               {item.label}
             </Link>
           ))}
+
+          <Button className="bg-orange-400 text-white hover:bg-orange-500" asChild>
+            <Link href="/admin">Admin</Link>
+          </Button>
+
           <Button asChild>
             <Link href="/donate">Donate</Link>
           </Button>
+
           <ModeToggle />
         </nav>
 
-        <div className="flex md:hidden items-center space-x-4">
+        {/* Mobile Nav */}
+        <div className="flex md:hidden items-center space-x-2">
           <ModeToggle />
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" aria-label="Open menu">
                 <Menu className="h-6 w-6" />
-                <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
-              <div className="flex flex-col space-y-4 mt-8">
+              <nav className="flex flex-col mt-10 space-y-4">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "text-2xl font-medium transition-colors hover:text-primary py-2",
-                      pathname === item.href ? "text-primary" : "text-muted-foreground",
+                      "text-lg font-medium hover:text-primary",
+                      pathname === item.href
+                        ? "text-primary"
+                        : "text-muted-foreground"
                     )}
                   >
                     {item.label}
                   </Link>
                 ))}
-                <Button asChild className="mt-4">
+
+                <Button className="bg-orange-400 text-white hover:bg-orange-500" asChild>
+                  <Link href="/admin">Admin</Link>
+                </Button>
+
+                <Button asChild className="mt-2">
                   <Link href="/donate">Donate</Link>
                 </Button>
-              </div>
+              </nav>
             </SheetContent>
           </Sheet>
         </div>
@@ -100,4 +119,3 @@ export default function Header() {
     </header>
   )
 }
-
