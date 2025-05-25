@@ -1,51 +1,73 @@
 [
- {  "_id": "1",
+  {
+    "_id": "1",
     "name": "Divyansh Gaur",
     "role": "Founder",
-    "bio": "Divyansh leads the vision of the team, ensuring innovation and impact.",
+    "bio": "Divyansh drives the vision and mission of the team, ensuring that innovation and meaningful impact remain at the forefront of all initiatives.",
     "image": "/team/divyansh_gaur.webp"
   },
-   { "_id": "2",
-    "name": "Prerna Dadlich",
-    "role": "Team Member",
-    "bio": "Prerna crafts campaigns that elevate the team's work to broader audiences.",
+  {
+    "_id": "2",
+    "name": "Prerna Dadhich",
+    "role": "Campaign Strategist",
+    "bio": "Prerna leads creative campaigns that enhance the team's visibility and connect their work with wider audiences in impactful ways.",
     "image": "/team/Prerna_Dadlich.Webp"
   },
-  { "_id": "3",
+  {
+    "_id": "3",
+    "name": "Lakshya Rajvanshi",
+    "role": "Strategic Advisor",
+    "bio": "Lakshya plays a key role in operational decision-making and long-term strategy, working closely with the founder to guide the team's direction.",
+    "image": "/team/Lakshya_Rajvanshi.Webp"
+  },
+  {
+    "_id": "4",
     "name": "Aditya Soni",
     "role": "Team Member",
-    "bio": "Aditya is a detail-oriented developer passionate about crafting efficient code.",
+    "bio": "Aditya supports the team through meticulous planning and execution, ensuring that all aspects of a project are aligned and well-organized.",
     "image": "/team/Aditya_soni.Webp"
   },
-  { "_id": "4",
+  {
+    "_id": "5",
     "name": "Anuj Modi",
     "role": "Team Member",
-    "bio": "Anuj works on building scalable APIs and managing server infrastructure.",
+    "bio": "Anuj contributes to the team's operational effectiveness by streamlining systems and ensuring smooth coordination behind the scenes.",
     "image": "/team/Anuj_modi.Webp"
   },
-  { "_id": "5",
+  {
+    "_id": "6",
     "name": "Bhavya Khatri",
-    "role": "Team Member",
-    "bio": "Bhavya designs and implements sleek interfaces for modern web applications.",
+    "role": "Interface Designer",
+    "bio": "Bhavya specializes in crafting clean, user-friendly interfaces that elevate the visual appeal and usability of digital experiences.",
     "image": "/team/Bhavya_khatri.Webp"
   },
-  { "_id": "6",
+  {
+    "_id": "7",
     "name": "Disha Kachwaha",
-    "role": "Team Member",
-    "bio": "Disha keeps the team organized and ensures timely delivery of projects.",
+    "role": "Project Coordinator",
+    "bio": "Disha ensures timely project delivery by managing workflows, keeping the team organized, and maintaining clear communication across tasks.",
     "image": "/team/Disha_Kachwaha.Webp"
   },
-  
-  { "_id": "7",
+  {
+    "_id": "8",
     "name": "Kirti Shrimali",
-    "role": "Team Member",
-    "bio": "Kirti focuses on designing user-centric experiences with beautiful visuals.",
+    "role": "User Experience Designer",
+    "bio": "Kirti creates intuitive, visually engaging user experiences that reflect a deep understanding of design and human-centered principles.",
     "image": "/team/Kirti_shrimali.Webp"
   },
-  { "_id": "8",
+  {
+    "_id": "9",
     "name": "Nidhi Purohit",
-    "role": "Team Member",
-    "bio": "Nidhi brings wellness and balance to the team with her yoga expertise.",
+    "role": "Wellness Expert",
+    "bio": "Nidhi promotes wellness and balance within the team through her expertise in yoga and mindfulness practices.",
     "image": "/team/Nidhi_purohit.Webp"
+  },
+  {
+    "_id": "10",
+    "name": "Anushka Devanda",
+    "role": "Wellness Expert",
+    "bio": "Anushka promotes wellness and balance within the team through her expertise in yoga and mindfulness practices.",
+    "image": "/team/Anushka_Devanda.Webp"
   }
 ]
+

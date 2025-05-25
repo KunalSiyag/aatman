@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "date": "Apr 30, 2024",
+    "title": "Foundation Established",
+    "description": "Divyansh Gaur established Aatman Foundation with a vision to bridge traditional wisdom with modern challenges and create positive social impact.",
+    "image": "/journey/initial.webp"
+  },
+  {
+    "id": 2,
+    "date": "May 1, 2024",
+    "title": "First Service Initiative",
+    "description": "Launched our first community service by providing food at Seva Ashram, marking the beginning of our commitment to serving those in need.",
+    "image": "/journey/school.webp"
+  },
+  {
+    "id": 3,
+    "date": "Jul 10, 2024",
+    "title": "Tree Plantation Drive",
+    "description": "Organized our first environmental conservation initiative with a tree plantation drive, contributing to a greener future for our community.",
+    "image": "/journey/plantation.webp"
+  },
+  {
+    "id": 4,
+    "date": "Sep 1, 2024",
+    "title": "School Education Program",
+    "description": "Conducted yoga, hygiene, and self-awareness sessions at government schools, empowering students with holistic education and life skills.",
+    "image": "/journey/yoga.webp"
+  },
+  {
+    "id": 5,
+    "date": "Diwali 2024",
+    "title": "Diwali Community Initiative",
+    "description": "Launched initiatives to purchase diyas from local vendors and introduced reflective band programs, supporting local artisans during the festival of lights.",
+    "image": "/journey/Diwali.webp"
+  },
+  {
+    "id": 6,
+    "date": "Feb 25, 2025",
+    "title": "Holi Donation Drive",
+    "description": "Organized a special donation drive during Holi, spreading joy and colors while supporting community welfare initiatives.",
+    "image": "/journey/donation.webp"
+  },
+  {
+    "id": 7,
+    "date": "Mar 7, 2025",
+    "title": "Kids Rangotsav",
+    "description": "Hosted a vibrant Rangotsav event for children at Karni Singh Stadium, celebrating creativity, culture, and community spirit through art and festivities.",
+    "image": "/journey/rangostav.webp"
+  },
+  {
+    "id": 8,
+    "date": "Mar 18, 2025",
+    "title": "Yoga Flow Series Launch",
+    "description": "Launched our comprehensive Yoga Flow Series initiative, making ancient wellness practices accessible to communities and promoting holistic well-being.",
+    "image": "/journey/YogaFlow.webp"}
+]

@@ -1,6 +1,6 @@
 "use client"
 
-import { useLayoutEffect,useEffect, useRef } from "react"
+import { useLayoutEffect, useEffect, useRef , useState} from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -9,6 +9,178 @@ import { Heart, Users, Leaf, Award, Target, Clock } from "lucide-react"
 import TeamMembers from "./team-members"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import journeyData from "@/lib/journeyData.json"
+
+
+// Mission Impossible Style Slideshow Component
+function MissionImpossibleSlideshow() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isHovered, setIsHovered] = useState(false)
+  const slideshowRef = useRef<HTMLDivElement>(null)
+  const dateRef = useRef<HTMLDivElement>(null)
+  const textRef = useRef<HTMLDivElement>(null)
+  const imageRef = useRef<HTMLDivElement>(null)
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Auto-advance slides
+  useEffect(() => {
+    if (!isHovered) {
+      intervalRef.current = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % journeyData.length)
+      }, 4000)
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
+  }, [isHovered])
+
+  // GSAP animations for slide transitions
+  useEffect(() => {
+    if (!dateRef.current || !textRef.current || !imageRef.current) return
+
+    const tl = gsap.timeline()
+
+    // Date woosh effect
+    tl.fromTo(
+      dateRef.current,
+      {
+        x: -200,
+        opacity: 0,
+        scale: 0.5,
+        rotation: -10,
+      },
+      {
+        x: 0,
+        opacity: 1,
+        scale: 1,
+        rotation: 0,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+      },
+    )
+
+    // Text pop-up from right
+    tl.fromTo(
+      textRef.current.children,
+      {
+        x: 100,
+        opacity: 0,
+        y: 20,
+      },
+      {
+        x: 0,
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power3.out",
+      },
+      "-=0.4",
+    )
+
+    // Image slide in
+    tl.fromTo(
+      imageRef.current,
+      {
+        scale: 1.2,
+        opacity: 0,
+        filter: "blur(10px)",
+      },
+      {
+        scale: 1,
+        opacity: 1,
+        filter: "blur(0px)",
+        duration: 1,
+        ease: "power2.out",
+      },
+      "-=0.6",
+    )
+  }, [currentSlide])
+
+  const currentData = journeyData[currentSlide]
+
+  return (
+    <div
+      ref={slideshowRef}
+      className="relative h-[600px]  bg-black rounded-2xl overflow-hidden cursor-pointer"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Background Image */}
+      <div ref={imageRef} className="absolute inset-0">
+        <Image src={currentData.image || "/placeholder.svg"} alt={currentData.title} fill className="object-cover" />
+        <div className="absolute inset-0 bg-black/45"/>
+      </div>
+
+      {/* Date Display - Top */}
+      <div ref={dateRef} className="absolute top-8 left-8 z-10">
+        <div className="bg-primary/90 backdrop-blur-sm px-6 py-3 rounded-full">
+          <span className="text-white font-bold text-xl tracking-wider">{currentData.date}</span>
+        </div>
+      </div>
+
+      {/* Content - Right Side */}
+      <div ref={textRef}  className="absolute z-10 max-w-md
+             bottom-4 left-1/2 -translate-x-1/2
+             sm:bottom-auto sm:left-auto sm:right-16 sm:top-3/4 sm:-translate-y-1/2 sm:translate-x-0"
+>
+        <div className="bg-white/95 backdrop-blur-sm p-8 rounded-xl shadow-2xl">
+          <h3 className="text-2xl font-bold mb-4 text-gray-900">{currentData.title}</h3>
+          <p className="text-gray-700 leading-relaxed">{currentData.description}</p>
+        </div>
+      </div>
+
+      {/* Progress Indicators */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+        {journeyData.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              index === currentSlide ? "bg-primary scale-125" : "bg-white/50 hover:bg-white/80"
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* Slide Counter */}
+      <div className="absolute top-8 right-8 z-10">
+        <div className="bg-black/50 backdrop-blur-sm px-4 py-2 rounded-full">
+          <span className="text-white font-mono text-sm">
+            {String(currentSlide + 1).padStart(2, "0")} / {String(journeyData.length).padStart(2, "0")}
+          </span>
+        </div>
+      </div>
+
+      {/* Navigation Arrows */}
+      <button
+        onClick={() => setCurrentSlide((prev) => (prev - 1 + journeyData.length) % journeyData.length)}
+       className="absolute left-2 sm:left-4 top-auto bottom-4 sm:top-1/2 sm:-translate-y-1/2 z-10 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-all duration-300"
+      >
+        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <button
+        onClick={() => setCurrentSlide((prev) => (prev + 1) % journeyData.length)}
+        className="absolute right-2 sm:right-4 top-auto bottom-4 sm:top-1/2 sm:-translate-y-1/2 z-10 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-all duration-300"
+      >
+        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  )
+}
+
 
 export default function AboutPage() {
   // Refs for animation targets
@@ -384,7 +556,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Our Journey */}
+       {/* Our Journey - Mission Impossible Style Slideshow */}
       <section ref={journeyRef} className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center mb-16">
@@ -394,190 +566,8 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="space-y-12">
-              <div className="journey-item relative pl-10 md:pl-0">
-                <div className="hidden md:block absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-border"></div>
-
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-8 items-start">
-                  <div className="md:text-right order-2 md:order-1">
-                    <h3 className="text-xl font-bold">Foundation Established</h3>
-                    <p className="text-muted-foreground">
-                      Divyansh Gaur established Aatman Foundation with a vision to bridge traditional wisdom with modern
-                      challenges.
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-center order-1 md:order-2">
-                    <div className="absolute md:static left-0 top-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground">
-                      <Clock className="h-4 w-4" />
-                    </div>
-                    <div className="hidden md:block text-muted-foreground font-medium">2018</div>
-                  </div>
-
-                  <div className="order-3 md:order-3">
-                    <div className="relative h-32 w-full rounded-lg overflow-hidden">
-                      <Image
-                        src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop"
-                        alt="Foundation Established"
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="journey-item relative pl-10 md:pl-0">
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-8 items-start">
-                  <div className="order-3 md:order-1">
-                    <div className="relative h-32 w-full rounded-lg overflow-hidden">
-                      <Image
-                        src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format&fit=crop"
-                        alt="First Community Program"
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-center order-1 md:order-2">
-                    <div className="absolute md:static left-0 top-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground">
-                      <Clock className="h-4 w-4" />
-                    </div>
-                    <div className="hidden md:block text-muted-foreground font-medium">2019</div>
-                  </div>
-
-                  <div className="order-2 md:order-3">
-                    <h3 className="text-xl font-bold">First Community Program</h3>
-                    <p className="text-muted-foreground">
-                      Launched our first community service program, providing educational support to children in
-                      underserved areas.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="journey-item relative pl-10 md:pl-0">
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-8 items-start">
-                  <div className="md:text-right order-2 md:order-1">
-                    <h3 className="text-xl font-bold">Yoga Initiative Begins</h3>
-                    <p className="text-muted-foreground">
-                      Started free community yoga classes, making ancient practices accessible to people of all
-                      backgrounds.
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-center order-1 md:order-2">
-                    <div className="absolute md:static left-0 top-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground">
-                      <Clock className="h-4 w-4" />
-                    </div>
-                    <div className="hidden md:block text-muted-foreground font-medium">2020</div>
-                  </div>
-
-                  <div className="order-3 md:order-3">
-                    <div className="relative h-32 w-full rounded-lg overflow-hidden">
-                      <Image
-                        src="https://images.unsplash.com/photo-1599447292180-45fd84092ef4?q=80&w=2070&auto=format&fit=crop"
-                        alt="Yoga Initiative Begins"
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="journey-item relative pl-10 md:pl-0">
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-8 items-start">
-                  <div className="order-3 md:order-1">
-                    <div className="relative h-32 w-full rounded-lg overflow-hidden">
-                      <Image
-                        src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2013&auto=format&fit=crop"
-                        alt="Environmental Focus"
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-center order-1 md:order-2">
-                    <div className="absolute md:static left-0 top-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground">
-                      <Clock className="h-4 w-4" />
-                    </div>
-                    <div className="hidden md:block text-muted-foreground font-medium">2021</div>
-                  </div>
-
-                  <div className="order-2 md:order-3">
-                    <h3 className="text-xl font-bold">Environmental Focus</h3>
-                    <p className="text-muted-foreground">
-                      Launched our first environmental conservation project with a major tree plantation drive and
-                      community education program.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="journey-item relative pl-10 md:pl-0">
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-8 items-start">
-                  <div className="md:text-right order-2 md:order-1">
-                    <h3 className="text-xl font-bold">Expanding Reach</h3>
-                    <p className="text-muted-foreground">
-                      Expanded our programs to multiple locations, reaching more communities and creating a wider
-                      impact.
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-center order-1 md:order-2">
-                    <div className="absolute md:static left-0 top-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground">
-                      <Clock className="h-4 w-4" />
-                    </div>
-                    <div className="hidden md:block text-muted-foreground font-medium">2022</div>
-                  </div>
-
-                  <div className="order-3 md:order-3">
-                    <div className="relative h-32 w-full rounded-lg overflow-hidden">
-                      <Image
-                        src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=2070&auto=format&fit=crop"
-                        alt="Expanding Reach"
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="journey-item relative pl-10 md:pl-0">
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-8 items-start">
-                  <div className="order-3 md:order-1">
-                    <div className="relative h-32 w-full rounded-lg overflow-hidden">
-                      <Image
-                        src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop"
-                        alt="Present Day"
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-center order-1 md:order-2">
-                    <div className="absolute md:static left-0 top-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground">
-                      <Clock className="h-4 w-4" />
-                    </div>
-                    <div className="hidden md:block text-muted-foreground font-medium">Today</div>
-                  </div>
-
-                  <div className="order-2 md:order-3">
-                    <h3 className="text-xl font-bold">Present Day</h3>
-                    <p className="text-muted-foreground">
-                      Today, Aatman Foundation continues to grow, with a dedicated team working across multiple
-                      initiatives to create positive change.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="max-w-6xl mx-auto journey-slideshow">
+            <MissionImpossibleSlideshow />
           </div>
         </div>
       </section>
