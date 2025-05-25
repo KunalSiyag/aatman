@@ -1,6 +1,6 @@
-# Aatman Foundation – Our Team Section
+# Aatman Foundation – 
 
-This project is a dynamic and visually engaging **Team Members** section built with **Next.js**, **Tailwind CSS**, and **GSAP**, featuring animated floating team member cards and a background with subtle moving gradient strips.
+This project is a dynamic and visually engaging website built with **Next.js**, **Tailwind CSS**, and **GSAP**, featuring animated floating team member cards and a background with subtle moving gradient strips.
 
 🔗 **Live Site**: [aatmanfoundation.netlify.app](https://aatmanfoundation.netlify.app)
 
@@ -19,4 +19,3 @@ This project is a dynamic and visually engaging **Team Members** section built w
 - **Image Handling**: `next/image`
 - **UI Components**: Custom Dialog Modal based on Shadcn UI pattern
 
-## 📁 File Structure
